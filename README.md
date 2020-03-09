@@ -1,5 +1,6 @@
-# DocReferral
-[Freelance Project] :  Website for Doctor Referral
+# Simple Resume Scanner
+
+This is a Simple Resume Scanner using PyPDF2
 
 Its a Python 3 application
 
