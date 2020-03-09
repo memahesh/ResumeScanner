@@ -1,0 +1,93 @@
+<html>
+    <head>
+        <title>
+            Deployed on Heroku
+        </title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    </head>
+    <body>
+        <h1>
+            Simple Resume Filter
+        </h1>
+
+        <form method="POST" id="ResumeQueryForm">
+            <div class="form-group">
+              <label for="q">Email address</label>
+              <input type="text" class="q" id="q" name="q" aria-describedby="qHelp" placeholder="Enter skill...">
+              <small id="qHelp" class="form-text text-muted">Write skill to filter. e.g. React</small>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+
+        <div class="container">
+            <div class="row">
+                <p>Filtered Resume (s)</p>
+            </div>
+            <div class="row" id="filtered">
+                <div class="panel-group" id="accordion" style="width:100%;">
+                </div>
+            </div>
+        </div>
+
+         
+
+        <script>
+            $(document).ready(function(){
+
+                $("#ResumeQueryForm").on('submit', function(e){
+                    e.preventDefault();
+                    ajaxFilterResume();
+                });
+
+                function ajaxFilterResume(){
+
+                    $("#accordion").html("");
+
+                    $.ajax({
+                        url:'/filter',
+                        method: 'POST',
+                        data: {
+                            'q': $("input[name=q]").val() 
+                        },
+                        success: function(data){
+                            console.log(data);
+
+                            for (let index = 0; index < data.resume.length; index++) {
+                                const element = data.resume[index];
+                                const path = '/static/resume/'+element;
+                                const template = `<div class="panel panel-default template">
+                                    <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapse${index}">
+                                        ${element}
+                                        </a>
+                                    </h4>
+                                    </div>
+                                    <div id="collapse${index}" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <iframe src="${path}" style="width:100%; height:500px;"></iframe>
+                                    </div>
+                                    </div>
+                                </div>`;
+                                $('#accordion').append(template);
+                            }
+
+
+                        },
+                        error: function(data){
+                            console.log(data);
+                        }
+                    });
+
+                    $(".btn-add-panel").on("click", function () {
+                        
+                    });
+
+                }
+                ajaxFilterResume();
+            });
+        </script>
+    </body>
+</html>
