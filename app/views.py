@@ -20,26 +20,24 @@ from app import app
 
 from PyPDF2 import PdfFileReader
 
-RESUME_DIR = 'app/static/resume/'
 
-@app.route('/')
-def index():
-    return render_template('index.html')
-
-@app.route('/filter', methods=['POST'])
+@app.route('/filter', methods=['GET'])
 def skill_filter():
 
     # print(request.form)
 
-    query = request.form.get('q')
+    path = request.args.get('path')
+    query = request.args.get('q')
 
-    resume = os.listdir(RESUME_DIR)
+    print(path, query)
+
+    resume = os.listdir(path)
 
     filtered_resume = []
 
     for d in resume:
-        path = RESUME_DIR+d
-        if check(path, query.lower()):
+        tPath = os.path.join(path, d)
+        if check(tPath, query.lower()):
             filtered_resume.append(d)
 
     return jsonify({
