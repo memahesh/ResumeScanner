@@ -17,7 +17,7 @@ MarkupSafe==1.1.1
 mccabe==0.6.1
 nltk==3.4.5
 pylint==2.4.4
-PyPDF2==1.26.0
+PyPDF2==1.27.5
 python-dateutil==2.8.1
 python-editor==1.0.4
 six==1.14.0
